@@ -2,10 +2,10 @@ const data = {
   label: 'd3分享',
   children: [
     {
-      label: '基础认知',
+      label: '初步了解',
       children: [
         {
-          label: '是什么',
+          label: '概念',
         },
         {
           label: '优点',
@@ -13,19 +13,28 @@ const data = {
         {
           label: '缺点',
         },
+        {
+          label: '版本',
+        },
       ],
     },
     {
       label: '简单使用',
       children: [
         {
-          label: '版本说明',
-        },
-        {
           label: '选择集',
         },
         {
-          label: '数据绑定',
+          label: '数据',
+        },
+        {
+          label: '元素',
+        },
+        {
+          label: '关键点',
+        },
+        {
+          label: '注意点',
         },
       ],
     },
@@ -33,28 +42,35 @@ const data = {
       label: '例子分享',
       children: [
         {
-          label: '柱状图',
+          label: '树状图',
         },
         {
           label: '力引导图',
-        },
-        {
-          label: '树状图',
         },
       ],
     },
   ],
 };
 
-const width = 1000;
+const padding = {
+  left: 50,
+  top: 20,
+  bottom: 20,
+  right: 0,
+};
+
+const width = 500;
 const height = 500;
 
-const treeSvg = body.append('svg').attr('width', width).attr('height', height);
+const treeSvg = body
+  .append('svg')
+  .attr('width', width)
+  .attr('height', height);
 
 const tree = d3
   .layout
   .tree()
-  .size([height / 2, width / 2])
+  .size([360, 320])
   .separation((a, b) => {
     return a.parent === b.parent ? 1 : 2;
   });
@@ -82,7 +98,8 @@ const link = treeSvg
   .enter()
   .append('path')
   .attr('class', 'link')
-  .attr('d', diagonal);
+  .style('stroke-width', 1)
+  .attr('d', diagonal)
 
 const node = treeSvg
   .selectAll('.node')
@@ -96,11 +113,16 @@ const node = treeSvg
 
 node
   .append('circle')
+  .attr('class', 'circle')
   .attr('r', 4.5);
 
 node
   .append('text')
+  .attr('class', 'text')
   .attr('dx', (d) => {
+    if (d.depth === 0) {
+      return 50;
+    }
     return d.children ? -8 : 8;
   })
   .attr('dy', 3)
